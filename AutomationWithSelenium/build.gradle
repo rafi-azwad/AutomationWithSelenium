@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.testng:testng:6.14.3'
+
+    //implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.1.5'
+    //implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.5.3'
+    implementation 'io.github.bonigarcia:webdrivermanager:5.1.0'
+
+
+}
+
+task webRun(type: Test) {
+
+
+    useTestNG() {
+        useDefaultListeners = true
+        scanForTestClasses = false
+        testLogging.showStandardStreams = true
+        systemProperties project.properties.subMap(["Type"])
+        String testValue = System.getProperty("Type");
+        System.out.println(testValue)
+
+
+        if(testValue.equals("webTest")){
+            suites "src/test/webTest.xml"
+        }
+        else if(testValue.equals("apiTest")){
+            suites "src/test/apiTest.xml"
+        }
+
+    }
+}
